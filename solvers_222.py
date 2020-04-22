@@ -68,6 +68,18 @@ class BruteForceSolver:
         with open(file_name, mode='r') as file:
             self._state_dict = json.load(file)
 
+    def get_solution(self, state):
+        moves = ''
+        if state not in self._state_dict:
+            return ''
+        cube = Cube222(state)
+        move = self._state_dict[state]
+        while move != '#':
+            cube.make_move(move)
+            moves += move + ' '
+            move = self._state_dict[cube.hash()]
+        return moves.strip(' ')
+
 
 def main():
     solver = BruteForceSolver()
@@ -80,7 +92,9 @@ def main():
             file_name = input('Enter file name (with extension): ')
             solver.save_state_tree(file_name)
 
-
+    while True:
+        state = input('Input state (RBW back left down, white down): ')
+        print('Solution: ' + solver.get_solution(state))
 
 if __name__ == '__main__':
     main()
