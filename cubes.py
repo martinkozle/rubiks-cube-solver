@@ -76,6 +76,9 @@ class Cube222:
         for move in moves.split(' '):
             self.make_move(move)
 
+    def hash(self):
+        return ''.join(self._stickers)
+
     def __repr__(self):
         return self._output_format.format(*self._stickers)
 
