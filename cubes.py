@@ -21,14 +21,14 @@ class Cube222:
     """
 
     def __init__(self, string):
-        self.output_format = '   {}{}\n' \
-                             '   {}{}\n' \
-                             '{}{} {}{} {}{} {}{}\n' \
-                             '{}{} {}{} {}{} {}{}\n' \
-                             '   {}{}\n' \
-                             '   {}{}'
-        self.stickers = [*string]
-        self.quads = {
+        self._output_format = '   {}{}\n' \
+                              '   {}{}\n' \
+                              '{}{} {}{} {}{} {}{}\n' \
+                              '{}{} {}{} {}{} {}{}\n' \
+                              '   {}{}\n' \
+                              '   {}{}'
+        self._stickers = [*string]
+        self._quads = {
             'R': [
                 [7, 21, 18, 1], [15, 23, 10, 3], [8, 16, 17, 9]
             ],
@@ -52,32 +52,32 @@ class Cube222:
     def copy(self):
         return deepcopy(self)
 
-    def rotate_cw(self, quad):
-        s = self.stickers
+    def _rotate_cw(self, quad):
+        s = self._stickers
         s[quad[0]], s[quad[1]], s[quad[2]], s[quad[3]] = s[quad[1]], s[quad[2]], s[quad[3]], s[quad[0]]
 
-    def rotate_ccw(self, quad):
-        s = self.stickers
+    def _rotate_ccw(self, quad):
+        s = self._stickers
         s[quad[0]], s[quad[3]], s[quad[2]], s[quad[1]] = s[quad[3]], s[quad[2]], s[quad[1]], s[quad[0]]
 
     def make_move(self, move: str):
-        if (not 0 < len(move) < 3) or move[0] not in self.quads or (len(move) == 2 and move[1] not in "'2"):
+        if (not 0 < len(move) < 3) or move[0] not in self._quads or (len(move) == 2 and move[1] not in "'2"):
             raise InvalidMoveNotationError(move)
-        for quad in self.quads[move[0]]:
+        for quad in self._quads[move[0]]:
             if move[-1] == "'":
-                self.rotate_ccw(quad)
+                self._rotate_ccw(quad)
             elif move[-1] == "2":
-                self.rotate_cw(quad)
-                self.rotate_cw(quad)
+                self._rotate_cw(quad)
+                self._rotate_cw(quad)
             else:
-                self.rotate_cw(quad)
+                self._rotate_cw(quad)
 
-    def make_moves(self, moves):
+    def make_moves(self, moves: str):
         for move in moves.split(' '):
             self.make_move(move)
 
     def __repr__(self):
-        return self.output_format.format(*self.stickers)
+        return self._output_format.format(*self._stickers)
 
 
 def main():
