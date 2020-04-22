@@ -40,12 +40,12 @@ class BruteForceSolver:
         valid_moves = ["R", "R'", "F", "F'", "U", "U'"]  # by natural order
         q = queue.Queue()
         for base_state in base_states:
-            q.put((base_state, '', '', 0))
+            q.put((base_state, '#', 0))
 
         while not q.empty():
-            state, fr, move, depth = q.get()
+            state, move, depth = q.get()
             if state not in self._state_dict:
-                self._state_dict[state] = (fr, move)
+                self._state_dict[state] = move
                 progress += 1
                 if log and progress % 10000 == 0:
                     print('States generated: ' + str(progress))
@@ -53,12 +53,12 @@ class BruteForceSolver:
                 for valid_move in valid_moves:
                     cube = Cube222(state)
                     cube.make_move(valid_move)
-                    q.put((cube.hash(), state, self._inverse_move(valid_move), depth + 1))
+                    q.put((cube.hash(), self._inverse_move(valid_move), depth + 1))
 
         if log:
             end_time = time.time()
-            print('Finished in {:.3} seconds'.format(end_time - start_time))
-        print(len(self._state_dict.keys()))
+            print('Finished in {:.2f} seconds'.format(end_time - start_time))
+        print('Generated {} states'.format(len(self._state_dict.keys())))
 
     def save_state_tree(self, file_name):
         with open(file_name, mode='w') as file:
