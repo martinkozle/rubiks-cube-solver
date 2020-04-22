@@ -1,6 +1,15 @@
 from copy import deepcopy
 
 
+class InvalidMoveNotationError(Exception):
+    def __init__(self, move, *args) -> None:
+        self.move = move
+        super().__init__(move, *args)
+
+    def __str__(self):
+        return 'Invalid move "' + self.move + '"'
+
+
 class Cube222:
     """
            0  1
@@ -51,12 +60,21 @@ class Cube222:
         s = self.stickers
         s[quad[0]], s[quad[3]], s[quad[2]], s[quad[1]] = s[quad[3]], s[quad[2]], s[quad[1]], s[quad[0]]
 
-    def make_move(self, move):
+    def make_move(self, move: str):
+        if (not 0 < len(move) < 3) or move[0] not in self.quads or (len(move) == 2 and move[1] not in "'2"):
+            raise InvalidMoveNotationError(move)
         for quad in self.quads[move[0]]:
             if move[-1] == "'":
                 self.rotate_ccw(quad)
+            elif move[-1] == "2":
+                self.rotate_cw(quad)
+                self.rotate_cw(quad)
             else:
                 self.rotate_cw(quad)
+
+    def make_moves(self, moves):
+        for move in moves.split(' '):
+            self.make_move(move)
 
     def __repr__(self):
         return self.output_format.format(*self.stickers)
@@ -66,8 +84,8 @@ def main():
     cube = Cube222('YYYYRRGGOOBBRRGGOOBBWWWW')
     print(cube)
     while True:
-        move = input()
-        cube.make_move(move)
+        moves = input()
+        cube.make_moves(moves)
         print(cube)
 
 
