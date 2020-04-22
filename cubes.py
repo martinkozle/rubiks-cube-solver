@@ -21,12 +21,12 @@ class Cube222:
     """
 
     def __init__(self, string):
-        self.output_format = '  {}{}\n' \
-                             '  {}{}\n' \
-                             '{}{}{}{}{}{}{}{}\n' \
-                             '{}{}{}{}{}{}{}{}\n' \
-                             '  {}{}\n' \
-                             '  {}{}'
+        self.output_format = '   {}{}\n' \
+                             '   {}{}\n' \
+                             '{}{} {}{} {}{} {}{}\n' \
+                             '{}{} {}{} {}{} {}{}\n' \
+                             '   {}{}\n' \
+                             '   {}{}'
         self.stickers = [*string]
         self.quads = {
             'R': [
